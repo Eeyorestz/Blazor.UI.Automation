@@ -8,26 +8,27 @@ namespace Blazor.UI.Automation
     public class GridTests
     {
         private GridPage _gridPage;
+
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             Browser.SetupDriver();
-            _gridPage = new GridPage();
-            Browser.Driver.Navigate().GoToUrl("http://local.blazor/grid");
+            _gridPage = new GridPage();    
         }
+
         [SetUp]
         public void TestSetup()
         {
-            Browser.Driver.Navigate().Refresh();
+            Browser.Driver.Navigate().GoToUrl("http://local.blazor/grid");
         }
 
         [Test]
         public void RowAdded_When_ClickAddForecastButton_And_FillInfo_And_ClickUpdateButton()
         {
-            int totalNumbersPlusOne = _gridPage.GetTotalItemsNumber + 1;
+            int expectedId = _gridPage.GetTotalItemsNumber + 1;
             var expectedGridData = new GridModel()
             {
-                Id = totalNumbersPlusOne.ToString(),
+                Id = expectedId.ToString(),
                 Date = DateTime.Now.AddDays(1),
                 TempC = "15",
                 Summary = "Random Text",
@@ -38,18 +39,18 @@ namespace Blazor.UI.Automation
             _gridPage.FillGridRow(expectedGridData);
 
             _gridPage.AssertRow(expectedGridData);
-            _gridPage.AssertTotalItemsNumber(totalNumbersPlusOne);
+            _gridPage.AssertTotalItemsNumber(expectedId);
         }
 
         [Test]
-        public void RowANotdded_When_ClickAddForecastButton_And_ClickCancelButton()
+        public void RowNotAdded_When_ClickAddForecastButton_And_ClickCancelButton()
         {
-            int totalNumbersPlusOne = _gridPage.GetTotalItemsNumber;
+            int expectedTotalNumber = _gridPage.GetTotalItemsNumber;
 
             _gridPage.AddForecast.Click();
             _gridPage.Cancel.Click();
 
-            _gridPage.AssertTotalItemsNumber(totalNumbersPlusOne);
+            _gridPage.AssertTotalItemsNumber(expectedTotalNumber);
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace Blazor.UI.Automation
 
             _gridPage.DeleteRowById(rowForDeletion);
 
-            _gridPage.AssertRowDeleted(rowForDeletion);
+            _gridPage.AssertRowIsDeleted(rowForDeletion);
         }
 
         [Test]
@@ -82,16 +83,16 @@ namespace Blazor.UI.Automation
         [Test]
         public void PageNavigatedToPage_When_ClickPagingButton()
         {
-            int pageNumber = 3;
+            int expectedPageNumber = 3;
             var expectedIds = _gridPage.GetGridIds();
-            _gridPage.OpenPageByNumber(pageNumber);
+            _gridPage.OpenPageByNumber(expectedPageNumber);
 
-            _gridPage.AssertPagingSelected(pageNumber);
+            _gridPage.AssertPagingSelected(expectedPageNumber);
             _gridPage.AssertIdsChanged(expectedIds);
         }
 
         [Test]
-        public void ResultsFiltered_When_EnterAValidFilter()
+        public void ResultsFiltered_When_EnterValidFilter()
         {
             _gridPage.OpenFilter("Id");
             _gridPage.SelectFilter("Is less than");
@@ -118,7 +119,7 @@ namespace Blazor.UI.Automation
         [Test]
         public void GridGrouped_When_DragAndDropColumn()
         {
-            string header = "Date";
+            var header = "Date";
 
             _gridPage.DragHeader(header);
 

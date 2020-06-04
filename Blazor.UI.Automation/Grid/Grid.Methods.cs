@@ -78,8 +78,7 @@ namespace Blazor.UI.Automation.Grid
             else 
             {
                 DragAndDrop(Wait.WaitUntillReady(Header(headerName)), Wait.WaitUntillReady(Header(secondHeader)));
-            }
-           
+            } 
         }
 
         public string GetRandomId()

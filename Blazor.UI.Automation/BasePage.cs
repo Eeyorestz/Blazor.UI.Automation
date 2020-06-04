@@ -5,16 +5,17 @@ namespace Blazor.UI.Automation
 {
     public class BasePage : Browser
     {
-        public ElementWaits Wait;
+        public ElementWaiter Wait { get; set; }
+
         public BasePage()
         {
-            Wait = new ElementWaits();
+            Wait = new ElementWaiter();
         }
 
-        public static void DragAndDrop(IWebElement element1, IWebElement element2)
+        public static void DragAndDrop(IWebElement fromElement, IWebElement toElement)
         {
             var builder = new Actions(Driver);
-            builder.DragAndDrop(element1,element2).Perform();
+            builder.DragAndDrop(fromElement, toElement).Perform();
         }
     }
 }

@@ -7,9 +7,14 @@ namespace Blazor.UI.Automation
     {
         public static IWebDriver Driver;
 
-        public static void SetupDriver() 
+        public static void SetupDriver(bool isHeadless = false) 
         {
-            Driver = new ChromeDriver();
+            var chromeOptions = new ChromeOptions();
+            if (isHeadless) 
+            {
+                chromeOptions.AddArgument("--headless");
+            }
+            Driver = new ChromeDriver(chromeOptions);
             Driver.Manage().Window.Maximize();
         }
     }

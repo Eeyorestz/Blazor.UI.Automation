@@ -5,7 +5,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Blazor.UI.Automation
 {
-    public class ElementWaits : Browser
+    public class ElementWaiter : Browser
     {
         public bool ElementDisplayed(By locator)
         {

@@ -5,9 +5,9 @@ namespace Blazor.UI.Automation.Grid
 {
     public partial class GridPage
     {
-        public void AssertRowDeleted(string rowId)
+        public void AssertRowIsDeleted(string rowId)
         {
-            Assert.IsFalse(GetGridIds().Contains(rowId));
+            Assert.IsFalse(GetGridIds().Contains(rowId),$"Row with id {rowId} should be deleted, but it is not.");
         }
 
         public void AssertRow(GridModel gridModel)
@@ -26,34 +26,38 @@ namespace Blazor.UI.Automation.Grid
 
         public void AssertTotalItemsNumber(int totalItems) 
         {
-            Assert.AreEqual(totalItems, GetTotalItemsNumber);
+            Assert.AreEqual(totalItems, GetTotalItemsNumber, $"Total numbers of items is different. It should be{totalItems}, but it is {GetTotalItemsNumber}");
         }
 
         public void AssertPagingSelected(int pageNumber) 
         {
-            Assert.IsTrue(Wait.WaitUntillReady(Page(pageNumber)).GetAttribute("class").Contains("selected"));
+            Assert.IsTrue(Wait.WaitUntillReady(Page(pageNumber))
+                .GetAttribute("class").Contains("selected"), $"Page {pageNumber} should be selected, but it is not.");
         }
 
         public void AssertIdsChanged(List<string> expectedIds)
         {
-            Assert.AreNotEqual(expectedIds, GetGridIds());
+            Assert.AreNotEqual(expectedIds, GetGridIds(),"The ids on the page should be changed, but they remained the same.");
         }
 
         public void AssertIdsMatch(List<string> expectedIds)
         {
-            Assert.AreEqual(expectedIds, GetGridIds());
+            Assert.AreEqual(expectedIds, GetGridIds(), "The ids on the page should be match, but they did not.");
         }
 
         public void AssertGridGrouped(string header)
         {
-            Assert.IsTrue(Wait.ElementDisplayed(GroupingParagraph), $"Elements should be grouped by {header}, but aren't");
-            Assert.IsTrue(Wait.WaitUntillReady(GroupingParagraph).InnerText().Contains(header));
+            Assert.IsTrue(Wait.ElementDisplayed(GroupingParagraph), $"Elements should be grouped by {header}, but aren't.");
+            Assert.IsTrue(Wait.WaitUntillReady(GroupingParagraph)
+                .InnerText().Contains(header), $"Paragraph should contain {header}, but it is not.");
         }
 
         public void AssertHeadersRearranged(string firstHeader, string secondHeader, int secondHeaderIndex) 
         {
-            Assert.AreEqual(secondHeaderIndex - 1, GetIndexOfHeader(secondHeader));
-            Assert.AreEqual(secondHeaderIndex, GetIndexOfHeader(firstHeader));
+            Assert.AreEqual(secondHeaderIndex - 1, GetIndexOfHeader(secondHeader), 
+                $"Header {secondHeader} should moved to {secondHeaderIndex -1} position, but it is not.");
+            Assert.AreEqual(secondHeaderIndex, GetIndexOfHeader(firstHeader), 
+                $"Header {firstHeader} should moved to {secondHeaderIndex} position, but it is not.");
         }
     }
 }
