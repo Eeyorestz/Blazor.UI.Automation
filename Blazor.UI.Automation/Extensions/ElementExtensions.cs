@@ -11,6 +11,7 @@ namespace Blazor.UI.Automation
             ElementWaiter wait = new ElementWaiter();
             return wait.WaitUntillReady(element).GetAttribute("innerText");
         }
+
         public static void Click(this By element)
         {
             ElementWaiter wait = new ElementWaiter();

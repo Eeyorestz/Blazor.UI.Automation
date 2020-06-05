@@ -12,15 +12,15 @@ namespace Blazor.UI.Automation.Grid
 
         public void AssertRow(GridModel gridModel)
         {
-            var row = GetRowIndexById(gridModel.Id);
+            var rowIndex = GetRowIndexById(gridModel.Id);
 
             Assert.Multiple(() =>
             {
-                if (gridModel.Id != null) { Assert.AreEqual(gridModel.Id, GridCell(row, GetIndexOfHeader("Id")).InnerText()); };
-                if (gridModel.Date != default) { Assert.AreEqual(gridModel.Date.FormatDateTime(), GridCell(row, GetIndexOfHeader("Date")).InnerText()); };
-                if (gridModel.TempC != null) { Assert.AreEqual(gridModel.TempC, GridCell(row, GetIndexOfHeader("Temp. C")).InnerText()); };
-                if (gridModel.TempF != null) { Assert.AreEqual(gridModel.TempF, GridCell(row, GetIndexOfHeader("Temp. F")).InnerText()); };
-                if (gridModel.Summary != null) { Assert.AreEqual(gridModel.Summary, GridCell(row, GetIndexOfHeader("Summary")).InnerText()); };
+                if (gridModel.Id != null) { Assert.AreEqual(gridModel.Id, GridCell(rowIndex, GetIndexOfHeader("Id")).InnerText());};
+                if (gridModel.Date != default) { Assert.AreEqual(gridModel.Date.FormatDateTime(), GridCell(rowIndex, GetIndexOfHeader("Date")).InnerText());};
+                if (gridModel.TempC != null) { Assert.AreEqual(gridModel.TempC, GridCell(rowIndex, GetIndexOfHeader("Temp. C")).InnerText());};
+                if (gridModel.TempF != null) { Assert.AreEqual(gridModel.TempF, GridCell(rowIndex, GetIndexOfHeader("Temp. F")).InnerText());};
+                if (gridModel.Summary != null) { Assert.AreEqual(gridModel.Summary, GridCell(rowIndex, GetIndexOfHeader("Summary")).InnerText());};
             });
         }
 

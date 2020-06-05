@@ -14,6 +14,7 @@ namespace Blazor.UI.Automation
             {
                 chromeOptions.AddArgument("--headless");
             }
+
             Driver = new ChromeDriver(chromeOptions);
             Driver.Manage().Window.Maximize();
         }

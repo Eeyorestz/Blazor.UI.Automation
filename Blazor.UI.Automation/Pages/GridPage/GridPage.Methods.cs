@@ -19,14 +19,12 @@ namespace Blazor.UI.Automation.Grid
 
         public void EditRowById(string id)
         {
-            var row = GetRowById(id);
-            row.FindElement(EditButton).Click();
+            GetRowById(id).FindElement(EditButton).Click();
         }
 
         public void DeleteRowById(string id)
         {
-            var row = GetRowById(id);
-            row.FindElement(DeleteButton).Click();
+            GetRowById(id).FindElement(DeleteButton).Click();
             Wait.WaitUntillReady(RowIdColumn);
         }
 
@@ -45,14 +43,15 @@ namespace Blazor.UI.Automation.Grid
 
         public List<string> GetHeaderNames()
         {
-            var ids = new List<string>();
-            var headers = Wait.WaitUntillListReady(Headers);
-            foreach (var row in headers)
+            var headers = new List<string>();
+            var headerElements = Wait.WaitUntillListReady(Headers);
+
+            foreach (var header in headerElements)
             {
-                ids.Add(row.InnerText());
+                headers.Add(header.InnerText());
             }
 
-            return ids;
+            return headers;
         }
 
         public void SortByHeader(string headerName, Directions direction)
@@ -69,7 +68,7 @@ namespace Blazor.UI.Automation.Grid
             }
         }
 
-        public void DragHeader(string headerName, string secondHeader= "") 
+        public void DragHeader(string headerName, string secondHeader = "") 
         {
             if (string.IsNullOrEmpty(secondHeader))
             {
@@ -85,14 +84,16 @@ namespace Blazor.UI.Automation.Grid
         {
             var listOfIds = GetGridIds();
 
-            return listOfIds[new Random().Next(listOfIds.Count)];
+            return GetGridIds()[new Random().Next(listOfIds.Count)];
         }
 
         public void FillGridRow(GridModel model)
         {
-            FillDate(model);
             HeaderServices headerServices = new HeaderServices();
             var properties = model.GetType().GetProperties();
+
+            FillDate(model);
+           
             foreach (var property in properties)
             {
                 var value = property.GetValue(model);
@@ -143,7 +144,7 @@ namespace Blazor.UI.Automation.Grid
 
         private string DateToFill(DateTime date) => date.Day.ToString();
 
-        private IWebElement GetCalendarDate(string day) => Wait.WaitUntillListReady(CalendarDates).Where(e => e.InnerText().Equals(day)).FirstOrDefault();
+        private IWebElement GetCalendarDate(string date) => Wait.WaitUntillListReady(CalendarDates).Where(e => e.InnerText().Equals(date)).FirstOrDefault();
 
         private IWebElement GetRowById(string id) => Wait.WaitUntillListReady(RowIdColumn).Where(e => e.InnerText().Equals(id)).FirstOrDefault();
     }

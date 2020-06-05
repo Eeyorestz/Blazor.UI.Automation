@@ -85,6 +85,7 @@ namespace Blazor.UI.Automation
         {
             int expectedPageNumber = 3;
             var expectedIds = _gridPage.GetGridIds();
+
             _gridPage.OpenPageByNumber(expectedPageNumber);
 
             _gridPage.AssertPagingSelected(expectedPageNumber);
